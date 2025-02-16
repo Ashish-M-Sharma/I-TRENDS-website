@@ -1,0 +1,16 @@
+/* Custom Swiper Navigation Arrows */
+.swiper-button-prev,
+.swiper-button-next {
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  color: #000; /* Change color if needed */
+}
+
+.swiper-button-prev {
+  margin-left: -60px; /* Moves left arrow further left */
+}
+
+.swiper-button-next {
+  right: -60px; /* Moves right arrow further right */
+}
