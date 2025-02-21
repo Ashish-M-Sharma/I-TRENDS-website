@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const AuthPage = () => {
   const navigate = useNavigate();
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const isSignUp = searchParams.get("mode") === "signup";
+
   const [userData, setUserData] = useState({ email: "", password: "" });
 
   const handleInputChange = (e) => {
@@ -16,7 +18,7 @@ const AuthPage = () => {
     if (isSignUp) {
       localStorage.setItem("user", JSON.stringify(userData));
       alert("Sign-up successful! You can now sign in.");
-      setIsSignUp(false);
+      setSearchParams({ mode: "signin" }); // Switch to Sign In
     } else {
       const storedUser = JSON.parse(localStorage.getItem("user"));
       if (
@@ -26,7 +28,7 @@ const AuthPage = () => {
       ) {
         alert("Sign-in successful!");
         navigate("/");
-        window.scrollTo(0, 0); // Scroll to top after redirection
+        window.scrollTo(0, 0);
       } else {
         alert("Invalid credentials. Please try again.");
       }
@@ -35,7 +37,7 @@ const AuthPage = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-md">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-4">
           {isSignUp ? "Sign Up" : "Sign In"}
         </h2>
@@ -72,7 +74,9 @@ const AuthPage = () => {
           {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
           <button
             className="text-blue-500 font-semibold hover:underline"
-            onClick={() => setIsSignUp(!isSignUp)}
+            onClick={() =>
+              setSearchParams({ mode: isSignUp ? "signin" : "signup" })
+            }
           >
             {isSignUp ? "Sign In" : "Sign Up"}
           </button>
